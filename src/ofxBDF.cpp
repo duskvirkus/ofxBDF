@@ -96,20 +96,23 @@ void ofxBDF::parseInputFile(ifstream &file) {
 			}
 			break;
 		case BITMAP:
-			currentChar.character.allocate(metadata.size, currentChar.boundingBox.height, OF_IMAGE_COLOR_ALPHA);
+			currentChar.character.allocate(currentChar.boundingBox.width, currentChar.boundingBox.height, OF_IMAGE_COLOR_ALPHA);
 			for (int i = 0; i < currentChar.boundingBox.height; i++) {
 				getline(file, line);
-				for (int j = 0; j < line.length(); j++) {
-					unsigned char byte = fromHex(line[j]);
-					for (char k = 0; k < 8; k++) {
-						int x = (7 - k) + (j * 8);
-						if (x < currentChar.character.getWidth()) {
-							if ((byte >> k) & 0x1) {
-								currentChar.character.setColor(x, i, ofColor::black);
-							}
-							else {
-								currentChar.character.setColor(x, i, ofColor(255, 255, 255, 0));
-							}
+				unsigned long long rawLine = strtoll(line.c_str(), 0, 16);
+				int bitsToUse = sizeof(unsigned long long) * 8;
+				if (currentChar.boundingBox.width < bitsToUse) {
+					bitsToUse = currentChar.boundingBox.width;
+				}
+				int padding = 8 - (currentChar.boundingBox.width % 8);
+				for (int j = 0; j < bitsToUse; j++) {
+					int x = ((bitsToUse - 1) - j);
+					if (x < currentChar.character.getWidth()) {
+						if (rawLine >> (j + padding) & 0x1) {
+							currentChar.character.setColor(x, i, ofColor::black);
+						}
+						else {
+							currentChar.character.setColor(x, i, ofColor(255, 255, 255, 0));
 						}
 					}
 				}
