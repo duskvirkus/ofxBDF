@@ -104,7 +104,7 @@ void ofxBDF::parseInputFile(ifstream &file) {
 				if (currentChar.boundingBox.width < bitsToUse) {
 					bitsToUse = currentChar.boundingBox.width;
 				}
-				int padding = 8 - (currentChar.boundingBox.width % 8);
+				int padding = currentChar.boundingBox.width % 8 == 0 ? 0 : 8 - (currentChar.boundingBox.width % 8);
 				for (int j = 0; j < bitsToUse; j++) {
 					int x = ((bitsToUse - 1) - j);
 					if (x < currentChar.character.getWidth()) {
@@ -146,19 +146,6 @@ vector<string> ofxBDF::getTokens(string s) {
 		tokens.push_back(buffer);
 	}
 	return tokens;
-}
-
-unsigned char ofxBDF::fromHex(char hex) {
-	if (hex >= '0' && hex <= '9') {
-		return hex - 48;
-	}
-	if (hex >= 'A' && hex <= 'F') {
-		return hex - 65 + 10;
-	}
-	if (hex >= 'a' && hex <= 'f') {
-		return hex - 97 + 10;
-	}
-	error(4, hex + " is not a valid input for fromHex.");
 }
 
 void ofxBDF::error(int code, string description) {

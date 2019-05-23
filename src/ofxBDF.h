@@ -47,7 +47,6 @@ protected:
 
 	void parseInputFile(ifstream &file);
 	vector<string> getTokens(string s);
-	unsigned char fromHex(char hex);
 	void error(int code, string description);
 
 	Declaration toDeclaration(string const &s);
