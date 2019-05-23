@@ -6,7 +6,7 @@ Intended to parse BDF files and create bitmap fonts that can then be manipulated
 
 ### ⚠️ Warnings
 
-- Has not been fully tested and minimal error checking.
+- Has not been fully tested and has minimal error checking.
 - No initalization for many variables. For example if using a variable in ofxBDFMetadata then if not set by importing bdf file then memeber variables maybe in an unexpected state.
 - Doesn't cover all declaration properties in BDF. You should get warnings in the console if lines are not parsed.
 
