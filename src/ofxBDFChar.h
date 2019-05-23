@@ -10,6 +10,12 @@ public:
 	int code;
 	ofxBDFBoundingBox boundingBox;
 	ofImage character;
+	
+	int scalableWidthX;
+	int scalableWidthY;
+
+	int deviceWidthX;
+	int deviceWidthY;
 
 	void draw(int x, int y, int scale);
 

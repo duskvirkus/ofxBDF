@@ -48,6 +48,7 @@ protected:
 	void parseInputFile(ifstream &file);
 	vector<string> getTokens(string s);
 	void error(int code, string description);
+	void warn(string description);
 
 	Declaration toDeclaration(string const &s);
 

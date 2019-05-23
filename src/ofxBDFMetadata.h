@@ -12,6 +12,11 @@ public:
 	int xDPI;
 	int yDPI;
 	int numberOfChars;
+
+	int fontDescent;
+	int fontAssent;
+	int defaultChar;
+
 	ofxBDFBoundingBox mainBoundingBox;
 
 	string toString() const;

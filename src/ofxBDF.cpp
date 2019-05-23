@@ -11,13 +11,13 @@ void ofxBDF::setup(string path) {
 }
 
 void ofxBDF::draw(int scale) {
-	int x = 20;
-	int y = 20;
+	int x = metadata.size;
+	int y = metadata.size;
 	for (int i = 0; i < chars.size(); i++) {
 		chars[i].draw(x, y, scale);
 		x += chars[i].character.getWidth() * scale;
-		if (x > ofGetWidth() - 40) {
-			x = 20;
+		if (x > ofGetWidth() - metadata.size * 2) {
+			x = metadata.size;
 			y += metadata.mainBoundingBox.height * scale;
 		}
 	}
@@ -60,10 +60,13 @@ void ofxBDF::parseInputFile(ifstream &file) {
 			declarations.push(currentDeclaration);
 			break;
 		case FONT_DESCENT:
+			metadata.fontDescent = stoi(tokens[1]);
 			break;
 		case FONT_ASCENT:
+			metadata.fontAssent = stoi(tokens[1]);
 			break;
 		case DEFAULT_CHAR:
+			metadata.defaultChar = stoi(tokens[1]);
 			break;
 		case ENDPROPERTIES:
 			declarations.pop();
@@ -79,8 +82,12 @@ void ofxBDF::parseInputFile(ifstream &file) {
 			currentChar.code = stoi(tokens[1]);
 			break;
 		case SWIDTH:
+			currentChar.scalableWidthX = stoi(tokens[1]);
+			currentChar.scalableWidthY = stoi(tokens[2]);
 			break;
 		case DWIDTH:
+			currentChar.deviceWidthX = stoi(tokens[1]);
+			currentChar.deviceWidthY = stoi(tokens[2]);
 			break;
 		case BBX:
 			ofxBDFBoundingBox box;
@@ -127,13 +134,13 @@ void ofxBDF::parseInputFile(ifstream &file) {
 			declarations.pop();
 			break;
 		case UNKNOWN:
-			//error(2, "Unexpected line when parsing file! Occurred on line : \"" + line + "\"");
+			warn("Unexpected line when parsing file! Occurred on line : \"" + line + "\"");
 			break;
 		}
 	}
 
 	if (!declarations.empty()) {
-		error(3, "Declaration in file was not closed!");
+		error(2, "Declaration in file was not closed!");
 	}
 
 }
@@ -154,6 +161,11 @@ void ofxBDF::error(int code, string description) {
 	cout << "Press enter to exit.";
 	cin.get();
 	exit(code);
+}
+
+void ofxBDF::warn(string description) {
+	cout << "ofxBDF WARN - ";
+	cout << description << endl;
 }
 
 ofxBDF::Declaration ofxBDF::toDeclaration(string const &s) {
