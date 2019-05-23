@@ -1,7 +1,12 @@
-[Bb]in/*
-![Bb]in/data/
-[Bb]uild/
+bin/
+Bin/
+!bin/data
+!Bin/data
+build/
+Build/
 [Oo]bj/
+obj/
+Obj/
 *.o
 [Dd]ebug*/
 [Rr]elease*/
@@ -17,3 +22,4 @@ Desktop.ini
 *.vcxproj
 *.vcxproj.*
 .vs/*
+.rc
